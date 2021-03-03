@@ -13,7 +13,7 @@ public class DoubleLinkedList <E>implements List<E> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return 0;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class DoubleLinkedList <E>implements List<E> {
 
     @Override
     public boolean add(E e) {
-        return false;
+        add(0, e);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class DoubleLinkedList <E>implements List<E> {
 
     @Override
     public E get(int index) {
-        return null;
+        return listIterator(index).next();
     }
 
     @Override
@@ -88,7 +88,7 @@ public class DoubleLinkedList <E>implements List<E> {
 
     @Override
     public void add(int index, E element) {
-
+       listIterator(index).add(element);
     }
 
     @Override
@@ -113,11 +113,23 @@ public class DoubleLinkedList <E>implements List<E> {
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return null;
+
     }
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         return null;
+    }
+
+    private static class Node<E>
+    {
+        private E data;
+        private Node<E> next = null;
+        private Node<E> prev = null;
+
+        private Node(E dataItem)
+        {
+            data = dataItem;
+        }
     }
 }
