@@ -9,6 +9,9 @@ public class DoubleLinkedList <E>implements List<E> {
     private int index = 0;
     private int size = 0;
 
+    private Node<E> head = null;
+    private Node<E> tail = null;
+
     private static class Node<E>
     {
         private E data;
@@ -19,14 +22,6 @@ public class DoubleLinkedList <E>implements List<E> {
         {
             data = item;
         }
-    }
-
-
-    public class DoubleLinkedList<E>
-    {
-        private Node<E> head = null;
-        private Node<E> tail = null;
-        private int size = 0;
     }
 
     public DoubleListIterator(int i)
@@ -53,9 +48,10 @@ public class DoubleLinkedList <E>implements List<E> {
     }
 
     // listIterator interface methods
+    /*
     public void add(int index, E element) {
         listIterator(index).add(element);
-    }
+    }*/
 
     public boolean hasNext()
     {
@@ -73,7 +69,7 @@ public class DoubleLinkedList <E>implements List<E> {
         {
             throw new NoSuchElementException();
         }
-        if(nextItem = null)
+        if(nextItem == null)
         {
             nextItem = tail;
         }
@@ -173,7 +169,7 @@ public class DoubleLinkedList <E>implements List<E> {
 
     @Override
     public E get(int index) {
-        return listIterator(index).next();
+        return null;
     }
 
     @Override
@@ -182,8 +178,14 @@ public class DoubleLinkedList <E>implements List<E> {
     }
 
     @Override
+    public void add(int index, E element)
+    {
+
+    }
+
+    @Override
     public E remove(int index) {
-        listIterator(index).remove();
+        return null;
     }
 
     @Override
