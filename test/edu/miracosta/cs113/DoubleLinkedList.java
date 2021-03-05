@@ -1,9 +1,6 @@
 package edu.miracosta.cs113;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class DoubleLinkedList <E>implements List<E> {
 
@@ -53,6 +50,53 @@ public class DoubleLinkedList <E>implements List<E> {
                 nextItem = nextItem.next;
             }
         }
+    }
+
+    // listIterator interface methods
+    public void add(int index, E element) {
+        listIterator(index).add(element);
+    }
+
+    public boolean hasNext()
+    {
+        return nextItem != null;
+    }
+
+    public boolean hasPrevious()
+    {
+        return (nextItem == null && size!= 0) || nextItem.prev != null;
+    }
+
+    public E previous()
+    {
+        if(!hasPrevious())
+        {
+            throw new NoSuchElementException();
+        }
+        if(nextItem = null)
+        {
+            nextItem = tail;
+        }
+        else
+        {
+            nextItem = nextItem.prev;
+        }
+        lastItemReturned = nextItem;
+        index--;
+        return lastItemReturned.data;
+    }
+
+
+    public E next()
+    {
+        if(!hasNext())
+        {
+            throw new NoSuchElementException();
+        }
+        lastItemReturned = nextItem;
+        nextItem = nextItem.next;
+        index++;
+        return lastItemReturned.data;
     }
 
 
@@ -135,11 +179,6 @@ public class DoubleLinkedList <E>implements List<E> {
     @Override
     public E set(int index, E element) {
         return null;
-    }
-
-    @Override
-    public void add(int index, E element) {
-       listIterator(index).add(element);
     }
 
     @Override
