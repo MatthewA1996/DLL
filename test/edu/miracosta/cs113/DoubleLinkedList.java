@@ -5,16 +5,11 @@ import java.util.*;
 public class DoubleLinkedList <E>implements List<E> {
 
 
-    private int size = 0;
-
-    private Node<E> head = null;
-    private Node<E> tail = null;
-
     private static class Node<E>
     {
         private E data;
-        private Node<E> prev = null;
-        private Node<E> next = null;
+        private Node<E> prev;
+        private Node<E> next;
 
         private Node (E item)
         {
@@ -36,11 +31,11 @@ public class DoubleLinkedList <E>implements List<E> {
     {
         private Node<E> nextItem;
         private Node<E> lastItemReturned;
-        private int index = 0;
+        private int index;
 
         public DoubleListIterator(int i) {
-            if (i < 0 || i > size) {
-                throw new IndexOutOfBoundsException("Invalid index " + i);
+            if (i < 0 || i > size()) {
+                throw new IndexOutOfBoundsException();
             }
             lastItemReturned = null;
 
@@ -196,26 +191,56 @@ public class DoubleLinkedList <E>implements List<E> {
         }
     } // End of DoubleListIterator
 
+    // Begin DLL
+    private Node<E> head = null;
+    private Node<E> tail = null;
+    private int size = 0;
 
+    public DoubleListIterator listIterator()
+    {
+        return new DoubleListIterator();
+    }
 
-    // listIterator interface methods
+    public DoubleListIterator iterator()
+    {
+        return new DoubleListIterator();
+    }
 
-    /*
-    public void add(int index, E element) {
-        listIterator(index).add(element);
-    }*/
+    public DoubleListIterator listIterator(int index)
+    {
+        return new DoubleListIterator(index);
+    }
+
+    public DoubleLinkedList()
+    {
+        tail = null;
+        head = null;
+        size = 0;
+    }
+
+    public void add(int index, E item)
+    {
+        listIterator(index).add(item);
+    }
 
 
 
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+       if(head == null)
+       {
+           return true;
+       }
+       else
+       {
+           return false;
+       }
     }
 
     @Override
@@ -223,10 +248,6 @@ public class DoubleLinkedList <E>implements List<E> {
         return false;
     }
 
-    @Override
-    public Iterator<E> iterator() {
-        return null;
-    }
 
     @Override
     public Object[] toArray() {
@@ -276,12 +297,24 @@ public class DoubleLinkedList <E>implements List<E> {
 
     @Override
     public void clear() {
-
+      head = null;
+      tail = head;
+      size = 0;
     }
 
     @Override
-    public E get(int index) {
-        return null;
+    public E get(int index)
+    {
+      DoubleListIterator iterator = new DoubleListIterator(index);
+
+      if(iterator.hasNext() == false)
+      {
+          throw new IndexOutOfBoundsException();
+      }
+      else
+      {
+          return iterator.next();
+      }
     }
 
     @Override
@@ -289,11 +322,6 @@ public class DoubleLinkedList <E>implements List<E> {
         return null;
     }
 
-    @Override
-    public void add(int index, E element)
-    {
-
-    }
 
     @Override
     public E remove(int index) {
@@ -310,17 +338,8 @@ public class DoubleLinkedList <E>implements List<E> {
         return 0;
     }
 
-    @Override
-    public ListIterator<E> listIterator()
-    {
-        return null;
-    }
 
-    @Override
-    public ListIterator<E> listIterator(int index)
-    {
-       return null;
-    }
+
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
