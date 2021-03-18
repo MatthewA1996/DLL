@@ -11,6 +11,12 @@ public class DoubleLinkedList <E>implements List<E> {
         private Node<E> prev;
         private Node<E> next;
 
+        private Node()
+        {
+            data = null;
+            next = null;
+            prev = null;
+        }
         private Node (E item)
         {
             data = item;
@@ -243,9 +249,18 @@ public class DoubleLinkedList <E>implements List<E> {
        }
     }
 
+
     @Override
-    public boolean contains(Object o) {
-        return false;
+    public boolean contains(Object o)
+    {
+        if(indexOf(o) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 
@@ -267,7 +282,35 @@ public class DoubleLinkedList <E>implements List<E> {
     @Override
     public boolean remove(Object o)
     {
-        return false;
+        int currentSize = size;
+        int targetIndex = indexOf(o);
+
+        if(targetIndex >= size() || targetIndex < 0)
+        {
+            return false;
+        }
+
+        DoubleListIterator iterator = new DoubleListIterator(targetIndex);
+
+        if(iterator.hasNext() == true)
+        {
+            iterator.next();
+        }
+        else
+        {
+            throw new IndexOutOfBoundsException();
+        }
+
+        iterator.remove();
+
+        if(currentSize == (size()-1))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     @Override
@@ -296,7 +339,8 @@ public class DoubleLinkedList <E>implements List<E> {
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
       head = null;
       tail = head;
       size = 0;
@@ -318,28 +362,140 @@ public class DoubleLinkedList <E>implements List<E> {
     }
 
     @Override
-    public E set(int index, E element) {
-        return null;
+    public E set(int index, E element)
+    {
+       if(index > size()-1)
+       {
+           throw new IndexOutOfBoundsException();
+       }
+       DoubleListIterator iterator = new DoubleListIterator(index);
+       Node<E> prevdata = new Node<E>();
+       iterator.next();
+
+       prevdata.data = iterator.lastItemReturned.data;
+       iterator.set(element);
+
+       return prevdata.data;
     }
 
 
     @Override
-    public E remove(int index) {
-        return null;
+    public E remove(int index)
+    {
+        if(index >= size() || index < 0)
+        {
+            throw new IndexOutOfBoundsException();
+        }
+        else
+        {
+            DoubleListIterator iterator = new DoubleListIterator(index);
+
+            if(iterator.hasNext() == false)
+            {
+                throw new IllegalStateException();
+            }
+            else
+            {
+                E removed = iterator.next();
+                iterator.remove();
+                return removed;
+            }
+        }
     }
 
     @Override
-    public int indexOf(Object o) {
-        return 0;
+    public int indexOf(Object o)
+    {
+        int position = 0;
+        if(o == null)
+        {
+            return -1;  // empty list
+        }
+        Node index = head;
+
+        while(index != null)
+        {
+            if(o.equals(index.data))
+            {
+                return position;
+            }
+            position++;
+            index = index.next;
+        }
+        return -1; // not found
     }
 
     @Override
-    public int lastIndexOf(Object o) {
-        return 0;
+    public int lastIndexOf(Object o)
+    {
+        int pos = 0;
+        if(o == null)
+        {
+            return -1;
+        }
+        Node index = head;
+        while(index != null)
+        {
+            if(o.equals(index.data))
+            {
+                return (size-pos-1);
+            }
+            pos++;
+            index = index.next;
+        }
+        return -1;
     }
 
+    public boolean equals(Object other)
+    {
+        if(other == null || !(other instanceof LinkedList))
+        {
+            return false;
+        }
+        else
+        {
+            List otherList = (LinkedList) other;
 
+            if(size() != otherList.size())
+            {
+                return false;
+            }
 
+            Node<E> index = head;
+
+            while(index != null)
+            {
+                if(!(otherList.contains(index.data)))
+                {
+                    return false;
+                }
+                index = index.next;
+            }
+            return true;
+        }
+    }
+
+    public String toString()
+    {
+       String info = "";
+       Node pos = head;
+
+       if(head == null)
+       {
+           info +="Empty List";
+       }
+       else
+       {
+           while(pos != null)
+           {
+               info += pos.data;
+               pos = pos.next;
+               info +=",";
+           }
+           info = info.substring(0,info.length()-2);
+       }
+       return info;
+    }
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
